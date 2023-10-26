@@ -15,25 +15,30 @@ const getDogsName = async (name) => {
       },
     });
   
-    const response = ( await axios (`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)).data;
-  
-    const dogsAPI = response.map((dog) => {
+    const response =  ( await axios(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)).data;
+
+    const dogsAPI = response.map( (dog) => {
       return {
         id: dog.id,
-        image: dog.image,
-        name: dog.name.toLowerCase(),
-        height: dog.height.metric,
-        weight: dog.weight.metric,
-        life: dog.life,
+        imagen: dog.reference_image_id,
+        nombre: dog.name,
+        altura: dog.height.metric,
+        peso: dog.weight.metric,
+        vida: dog.life_span,
+        temperamento: dog.temperament,
       }
-    })
+    });
+
     const allDogs = [...dogsAPI,...dogsBDD];
 
     const toLowerCaseName = name.toLowerCase();
-    const dog = allDogs.find((d) => d.name === (toLowerCaseName));
+    const dogsMatchingName = allDogs.find((dog) => dog.name.toLowerCase()
+    .includes(toLowerCaseName));
+    const maxResults = 5;
+    const limitedResults = dogsMatchingName.slice(0, maxResults);
 
-    if(dog){
-      return dog;
+    if(limitedResults.length > 0) {
+      return limitedResults;
     }else{
       throw "Nombre de perro no encontrado";
     }

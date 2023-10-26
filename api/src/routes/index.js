@@ -28,12 +28,12 @@ router.get("/dogs/:idRaza",  async(req, res) => {
 });
 
 router.get('/dogs/name', async (req, res) => {
-    const name = req.query.name; // Obtén el nombre desde la query de la URL
+ // Obtén el nombre desde la query de la URL
     try {
-      const dog = await getDogsName(name);
-      res.status(200).json(dog);
+      const dog = await getDogsName(req.query.name);
+      res.json(dog);
     } catch (error) {
-      res.status(404).json({ message: error });
+      res.status(500).json({ message: error });
     }
   });
 

@@ -20,11 +20,12 @@ const getDogDetail = async (idRaza) => {
     const dogsAPI = response.map((dog) => {
       return {
         id: dog.id,
-        image: dog.image,
-        name: dog.name,
-        height: dog.height.metric,
-        weight: dog.weight.metric,
-        life: dog.life,
+        imagen: dog.reference_image_id,
+        nombre: dog.name,
+        altura: dog.height.metric,
+        peso: dog.weight.metric,
+        vida: dog.life_span,
+        temperamento: dog.temperament,
       }
     })
     const allDogs = [...dogsAPI,...dogsBDD];
