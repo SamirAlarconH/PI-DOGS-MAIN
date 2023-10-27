@@ -38,7 +38,7 @@ const getDogDetail = async (idRaza) => {
       throw "Raza no encontrada";
     }
   } catch (error) {
-    throw "Error en la solicitud";
+    throw "Error en la solicitud al buscar perros por raza";
   }
 }
 

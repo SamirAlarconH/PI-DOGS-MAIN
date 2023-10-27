@@ -15,9 +15,9 @@ const getDogsName = async (name) => {
       },
     });
   
-    const response =  ( await axios(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)).data;
+    const response =  (await axios(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)).data;
 
-    const dogsAPI = response.map( (dog) => {
+    const dogsAPI = response.map((dog) => {
       return {
         id: dog.id,
         imagen: dog.reference_image_id,
@@ -32,19 +32,18 @@ const getDogsName = async (name) => {
     const allDogs = [...dogsAPI,...dogsBDD];
 
     const toLowerCaseName = name.toLowerCase();
-    const dogsMatchingName = allDogs.find((dog) => dog.name.toLowerCase()
-    .includes(toLowerCaseName));
+    const dogsMatchingName = allDogs.filter((dog) => dog.nombre.toLowerCase().includes(toLowerCaseName));
     const maxResults = 5;
-    const limitedResults = dogsMatchingName.slice(0, maxResults);
 
-    if(limitedResults.length > 0) {
+    if(Array.isArray(dogsMatchingName) && dogsMatchingName.length > 0) {
+      const limitedResults = dogsMatchingName.slice(0, maxResults);
       return limitedResults;
     }else{
       throw "Nombre de perro no encontrado";
     }
   } catch (error) {
-    throw "Error en la solicitud";
+    throw "Error en la solicitud al buscar perros por nombre";
   }
 }
 
-module.exports = {getDogsName};
+module.exports = { getDogsName };
