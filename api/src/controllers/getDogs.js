@@ -4,29 +4,29 @@ const axios = require('axios');
 const API_KEY = process.env.DOG_API_KEY;
 
 
-const getDogs = async () => {
+const getDogs = async (req, res) => {
   try {
     const response = await axios(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`);
     const data = response.data;
 
-    const dogPromises = data.map(async (perro) => {
+    const dogPromises = data.map(async (dog) => {
       return {
-        id: perro.id,
-        imagen: perro.reference_image_id,
-        nombre: perro.name,
-        altura: perro.height.metric, // Ajusta a la propiedad correcta de altura
-        peso: perro.weight.metric, // Ajusta a la propiedad correcta de peso
-        vida: perro.life_span,
-        temperamento: perro.temperament,
+        id: dog.id,
+        name: dog.name,
+        image: dog.reference_image_id,
+        height: dog.height.metric,
+        weight: dog.weight.metric,
+        life: dog.life_span,
+        temperament: dog.temperament,
       };
     });
 
     const dogs = await Promise.all(dogPromises);
 
-    return dogs;
+    res.status(200).json(dogs);
   } catch (error) {
-    throw new Error(" Error al obtener las razas de perros desde la API ");
+    res.status(500).json({ message: " Error al obtener las razas de perros desde la API " });
   }
 };
 
-module.exports = {getDogs};
+module.exports = { getDogs };
